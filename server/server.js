@@ -1,13 +1,11 @@
-// import csshook from 'css-modules-require-hook/preset';
 import React from 'react';
-import { renderToString, renderToStaticMarkup } from 'react-dom/server';
+import { renderToString } from 'react-dom/server';
 import buildPath from '../build/asset-manifest.json';
 
 const express = require('express');
 const app = express();
 const bodyParser = require('body-parser');
 const cookieParser = require('cookie-parser');
-const user = require('./userRoute');
 const path = require('path');
 const favicon = require('connect-favicons');
 
@@ -15,10 +13,8 @@ app.use(favicon('./build'));
 app.use(cookieParser());
 app.use(bodyParser.json());
 
-app.use('/user', user);
-
 app.use((req, res, next) => {
-  if (req.url.startsWith('/user/') || req.url.startsWith('/static/')) {
+  if (req.url.startsWith('/static/')) {
     return next();
   }
   const frontComponents = renderToString(
